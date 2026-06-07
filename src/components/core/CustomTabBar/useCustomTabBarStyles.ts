@@ -1,8 +1,12 @@
-import { AppTheme } from "@/styles/theme";
+import { useTheme } from "@/styles/ThemeContext";
 import { StyleSheet } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const createStyle = (theme: AppTheme, bottom: number) =>
-  StyleSheet.create({
+const useCustoTabBarStyles = () => {
+  const { theme } = useTheme();
+  const { bottom } = useSafeAreaInsets();
+
+  return StyleSheet.create({
     container: {
       flexDirection: "row",
       width: "100%",
@@ -31,6 +35,13 @@ const createStyle = (theme: AppTheme, bottom: number) =>
     activeLabel: {
       color: theme.colors.onPrimary,
     },
+    iconColor: {
+      color: theme.colors.onSurfaceVariant,
+    },
+    iconColorFocused: {
+      color: theme.colors.onPrimary,
+    },
   });
+};
 
-export default createStyle;
+export default useCustoTabBarStyles;

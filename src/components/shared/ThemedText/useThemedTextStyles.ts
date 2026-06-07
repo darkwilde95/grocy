@@ -1,8 +1,10 @@
-import { AppTheme } from "@/styles/theme";
+import { useTheme } from "@/styles/ThemeContext";
 import { StyleSheet } from "react-native";
 
-const createStyles = (theme: AppTheme) =>
-  StyleSheet.create({
+const useThemedTextStyles = () => {
+  const { theme } = useTheme();
+
+  return StyleSheet.create({
     default: {
       ...theme.typography.bodyMedium,
       color: theme.colors.onSurface,
@@ -23,5 +25,8 @@ const createStyles = (theme: AppTheme) =>
       marginBottom: theme.spacing.sm,
     },
   });
+};
 
-export default createStyles;
+export type TextTypes = keyof ReturnType<typeof useThemedTextStyles>;
+
+export default useThemedTextStyles;

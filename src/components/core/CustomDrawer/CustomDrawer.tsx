@@ -1,17 +1,13 @@
-import { useTheme } from "@/styles/ThemeContext";
 import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { Image, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import createStyles from "./customDrawerStyles";
+import useCustomDrawerStyles from "./useCustomDrawerStyles";
 
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
-  const { theme } = useTheme();
-  const { top } = useSafeAreaInsets();
-  const styles = createStyles(theme, top);
+  const styles = useCustomDrawerStyles();
 
   return (
     <DrawerContentScrollView

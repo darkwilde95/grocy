@@ -1,16 +1,13 @@
-import { useTheme } from "@/styles/ThemeContext";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { Pressable, Text, View } from "react-native";
-import createStyle from "./customTabBarStyles";
+import useCustoTabBarStyles from "./useCustomTabBarStyles";
 
 const CustomTabBar = ({
   state,
   descriptors,
-  insets,
   navigation,
 }: BottomTabBarProps) => {
-  const { theme } = useTheme();
-  const styles = createStyle(theme, insets.bottom);
+  const styles = useCustoTabBarStyles();
 
   return (
     <View style={styles.container}>
@@ -48,8 +45,8 @@ const CustomTabBar = ({
             {icon!({
               focused: isFocused,
               color: isFocused
-                ? theme.colors.onPrimary
-                : theme.colors.onSurfaceVariant,
+                ? styles.iconColorFocused.color
+                : styles.iconColor.color,
               size: 24,
             })}
             <Text style={[styles.label, isFocused && styles.activeLabel]}>

@@ -1,22 +1,35 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, Text, ViewStyle } from "react-native";
-import useThemedButtonStyles from "./themedButtonStyles";
+import useThemedButtonStyles from "./useThemedButtonStyles";
 
-const coloredOptions = ["default", "outlined"] as const;
+const buttonTypes = ["default", "outlined"] as const;
 const buttonColors = ["primary", "success", "warning", "error"] as const;
 
+type ButtonType = (typeof buttonTypes)[number];
+type ButtonColor = (typeof buttonColors)[number];
+type IconNameType = React.ComponentProps<typeof MaterialCommunityIcons>["name"];
+
+type ConditionalContentType =
+  | {
+      label?: string;
+      icon: IconNameType;
+    }
+  | {
+      label: string;
+      icon?: IconNameType;
+    };
+
 export interface ButtonProps {
-  as: (typeof coloredOptions)[number];
-  color: (typeof buttonColors)[number];
-  label?: string;
-  icon?: React.ComponentProps<typeof MaterialCommunityIcons>["name"];
+  as?: ButtonType;
+  color: ButtonColor;
 }
 
-type ThemedButtonProps = ButtonProps &
+type ThemedButtonProps = ConditionalContentType &
+  ButtonProps &
   Omit<React.ComponentPropsWithoutRef<typeof Pressable>, "children">;
 
 const ThemedButton = ({
-  as,
+  as = "default",
   color,
   label,
   icon,

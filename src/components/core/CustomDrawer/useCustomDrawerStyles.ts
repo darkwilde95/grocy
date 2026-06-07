@@ -1,8 +1,12 @@
-import { AppTheme } from "@/styles/theme";
+import { useTheme } from "@/styles/ThemeContext";
 import { StyleSheet } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const createStyles = (theme: AppTheme, insetTop: number) =>
-  StyleSheet.create({
+const useCustomDrawerStyles = () => {
+  const { theme } = useTheme();
+  const { top } = useSafeAreaInsets();
+
+  return StyleSheet.create({
     drawer: {
       backgroundColor: theme.colors.background,
     },
@@ -11,12 +15,12 @@ const createStyles = (theme: AppTheme, insetTop: number) =>
       backgroundColor: theme.colors.primaryFixed,
       alignItems: "flex-start",
       height: 200,
-      marginTop: -12 - insetTop,
+      marginTop: -12 - top,
       marginLeft: -12,
       marginRight: -12,
       marginBottom: 12,
       padding: 12,
-      paddingTop: 12 + insetTop,
+      paddingTop: 12 + top,
     },
     profileImage: {
       width: 72,
@@ -24,4 +28,5 @@ const createStyles = (theme: AppTheme, insetTop: number) =>
       borderRadius: 72,
     },
   });
-export default createStyles;
+};
+export default useCustomDrawerStyles;

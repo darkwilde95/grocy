@@ -1,4 +1,4 @@
-import DrawerNavigation from "@/layouts/DrawerNavigation";
+import DrawerNavigation from "@/layouts/DrawerNavigation/DrawerNavigation";
 import { ThemeProvider } from "@/styles/ThemeContext";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";

@@ -1,8 +1,10 @@
-import { AppTheme } from "@/styles/theme";
+import { useTheme } from "@/styles/ThemeContext";
 import { StyleSheet } from "react-native";
 
-const createStyles = (theme: AppTheme) =>
-  StyleSheet.create({
+const useCardContainerStyles = () => {
+  const { theme } = useTheme();
+
+  return StyleSheet.create({
     cardContainer: {
       width: "100%",
       padding: theme.spacing.md,
@@ -11,5 +13,6 @@ const createStyles = (theme: AppTheme) =>
       borderRadius: theme.roundness,
     },
   });
+};
 
-export default createStyles;
+export default useCardContainerStyles;

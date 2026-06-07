@@ -1,7 +1,6 @@
-import { useTheme } from "@/styles/ThemeContext";
 import React from "react";
 import { ScrollView, View } from "react-native";
-import createStyles from "./themedContainerStyles";
+import useThemedContainerStles from "./useThemedContainerStyles";
 
 const componentMap = {
   View,
@@ -18,13 +17,13 @@ type ThemedContainerProps<T extends BaseView> = ContainerProps<T> &
   React.ComponentPropsWithoutRef<(typeof componentMap)[T]>;
 
 const ThemedScreenContainer = <T extends BaseView = "View">({
-  as,
+  as = "View" as T,
   children,
   style,
   ...rest
 }: ThemedContainerProps<T>) => {
-  const { theme } = useTheme();
-  const styles = createStyles(theme);
+  const styles = useThemedContainerStles();
+
   const Component = componentMap[as as BaseView];
 
   return (

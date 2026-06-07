@@ -12,12 +12,7 @@ const Index = () => {
     >
       <ThemedText as="screenTitle">Home</ThemedText>
       <View style={{ flexDirection: "row", gap: 6, flexWrap: "wrap" }}>
-        <ThemedButton
-          as="default"
-          label="Testing"
-          color="primary"
-          icon="home"
-        />
+        <ThemedButton label="Testing" color="primary" icon="home" />
         <ThemedButton
           as="default"
           label="Testing"

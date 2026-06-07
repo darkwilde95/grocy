@@ -1,23 +1,22 @@
-import { useTheme } from "@/styles/ThemeContext";
 import { Text } from "react-native";
-import createStyles from "./themedTextStyles";
+import {
+  TextTypes,
+  default as useThemedTextStyles,
+} from "./useThemedTextStyles";
 
-type TextTypes = keyof ReturnType<typeof createStyles>;
-interface TextProps<T extends TextTypes> {
-  as?: T;
+interface TextProps {
+  as?: TextTypes;
 }
 
-type ThemedTextProps<T extends TextTypes> = TextProps<T> &
-  React.ComponentPropsWithoutRef<typeof Text>;
+type ThemedTextProps = TextProps & React.ComponentPropsWithoutRef<typeof Text>;
 
-const ThemedText = <T extends TextTypes = "default">({
-  as,
+const ThemedText = ({
+  as = "default",
   children,
   style,
   ...rest
-}: ThemedTextProps<T>) => {
-  const { theme } = useTheme();
-  const styles = createStyles(theme);
+}: ThemedTextProps) => {
+  const styles = useThemedTextStyles();
 
   return (
     <Text style={[styles[as as TextTypes], style]} {...rest}>

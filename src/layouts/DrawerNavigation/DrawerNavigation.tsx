@@ -2,11 +2,11 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Drawer } from "expo-router/drawer";
 
 import CustomDrawer from "@/components/core/CustomDrawer/CustomDrawer";
-import { useTheme } from "@/styles/ThemeContext";
 import { StatusBar } from "react-native";
+import useDrawerNavigationStyles from "./useDrawerNavigationStyles";
 
 const DrawerNavigation = () => {
-  const { theme } = useTheme();
+  const styles = useDrawerNavigationStyles();
 
   return (
     <>
@@ -15,27 +15,16 @@ const DrawerNavigation = () => {
         initialRouteName="(tabs)"
         drawerContent={CustomDrawer}
         screenOptions={{
-          drawerActiveTintColor: theme.colors.onSurfaceVariant,
-          drawerActiveBackgroundColor: theme.colors.surfaceVariant,
-          drawerInactiveTintColor: theme.colors.onSurface,
-          drawerItemStyle: {
-            borderRadius: theme.roundness,
-          },
-          drawerLabelStyle: {
-            ...theme.typography.headlineMedium,
-          },
+          drawerStyle: styles.drawerContainer,
+          drawerActiveTintColor: styles.itemActive.color,
+          drawerActiveBackgroundColor: styles.itemActive.backgroundColor,
+          drawerInactiveTintColor: styles.itemInactive.color,
+          drawerItemStyle: styles.itemContainer,
+          drawerLabelStyle: styles.itemLabel,
           title: "Grocy",
-          headerStyle: {
-            backgroundColor: theme.colors.surface,
-          },
-          drawerStyle: {
-            backgroundColor: theme.colors.surface,
-          },
-          headerTitleStyle: {
-            ...theme.typography.headlineLarge,
-            color: theme.colors.primary,
-          },
-          headerTintColor: theme.colors.onSurface,
+          headerStyle: styles.headerContainer,
+          headerTitleStyle: styles.headerTitle,
+          headerTintColor: styles.headerIconColor.color,
         }}
       >
         <Drawer.Screen
@@ -47,7 +36,7 @@ const DrawerNavigation = () => {
               <MaterialCommunityIcons
                 name="home-outline"
                 size={size}
-                color={theme.colors.primary}
+                color={styles.itemIconColor.color}
               />
             ),
           }}
@@ -61,7 +50,7 @@ const DrawerNavigation = () => {
               <MaterialCommunityIcons
                 name="receipt-text-outline"
                 size={size}
-                color={theme.colors.primary}
+                color={styles.itemIconColor.color}
               />
             ),
           }}
