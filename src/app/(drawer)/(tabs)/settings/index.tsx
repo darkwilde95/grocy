@@ -7,11 +7,7 @@ const Index = () => {
   const { theme } = useTheme();
 
   return (
-    <ThemedScreenContainer
-      as="ScrollView"
-      bounces={false}
-      overScrollMode="never"
-    >
+    <ThemedScreenContainer as="scroll" bounces={false} overScrollMode="never">
       <ThemedText as="screenTitle">Ajustes</ThemedText>
       <ThemedText>
         Gestiona tu cuenta y preferencias de la aplicación.

@@ -2,34 +2,34 @@ import React from "react";
 import { ScrollView, View } from "react-native";
 import useThemedContainerStles from "./useThemedContainerStyles";
 
-const componentMap = {
-  View,
-  ScrollView,
+const wrapperMap = {
+  view: View,
+  scroll: ScrollView,
 };
 
-type BaseView = keyof typeof componentMap;
+type WrapperType = keyof typeof wrapperMap;
 
-interface ContainerProps<T extends BaseView> {
+interface WrapperProps<T extends WrapperType> {
   as?: T;
 }
 
-type ThemedContainerProps<T extends BaseView> = ContainerProps<T> &
-  React.ComponentPropsWithoutRef<(typeof componentMap)[T]>;
+type ThemedWrapperProps<T extends WrapperType> = WrapperProps<T> &
+  React.ComponentPropsWithoutRef<(typeof wrapperMap)[T]>;
 
-const ThemedScreenContainer = <T extends BaseView = "View">({
-  as = "View" as T,
+const ThemedScreenContainer = <T extends WrapperType = "view">({
+  as = "view" as T,
   children,
   style,
   ...rest
-}: ThemedContainerProps<T>) => {
+}: ThemedWrapperProps<T>) => {
   const styles = useThemedContainerStles();
 
-  const Component = componentMap[as as BaseView];
+  const Wrapper = wrapperMap[as as WrapperType];
 
   return (
-    <Component style={[styles.screenContainer, style]} {...rest}>
+    <Wrapper style={[styles.screenContainer, style]} {...rest}>
       {children}
-    </Component>
+    </Wrapper>
   );
 };
 

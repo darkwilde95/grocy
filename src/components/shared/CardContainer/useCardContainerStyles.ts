@@ -12,6 +12,7 @@ const useCardContainerStyles = () => {
       borderColor: theme.colors.border,
       borderRadius: theme.roundness,
     },
+    pressedCard: { opacity: 0.8 },
   });
 };
 
