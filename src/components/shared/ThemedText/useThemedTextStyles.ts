@@ -1,28 +1,29 @@
 import { useTheme } from "@/styles/ThemeContext";
 import { StyleSheet } from "react-native";
+import { TextColorType } from "./ThemedText";
 
-const useThemedTextStyles = () => {
+const useThemedTextStyles = (color?: TextColorType) => {
   const { theme } = useTheme();
 
   return StyleSheet.create({
     default: {
       ...theme.typography.bodyMedium,
-      color: theme.colors.onSurface,
+      color: theme.colors[color ?? "onSurface"],
     },
     screenTitle: {
       ...theme.typography.displayLarge,
-      color: theme.colors.onSurface,
+      color: theme.colors[color ?? "onSurface"],
       marginBottom: theme.spacing.sm,
     },
     sectionTitle: {
       ...theme.typography.titleMedium,
-      color: theme.colors.primary,
       marginBottom: theme.spacing.sm,
+      color: theme.colors[color ?? "primary"],
     },
     inputLabel: {
       ...theme.typography.labelMedium,
-      color: theme.colors.primary,
       marginBottom: theme.spacing.sm,
+      color: theme.colors[color ?? "primary"],
     },
   });
 };

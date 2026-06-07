@@ -162,4 +162,8 @@ export const themes = {
   },
 };
 
+export type CapitalizeString<S extends string> = Capitalize<S>;
+
+export type TextThemedColorType<S extends string> = `on${CapitalizeString<S>}`;
+
 export type AppTheme = typeof themes.light;

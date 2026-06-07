@@ -44,7 +44,9 @@ const Index = () => {
         <ThemedButton as="outlined" label="Testing" color="error" icon="home" />
       </View>
       <View style={{ marginTop: 12 }}>
-        <CardContainer type="default" style={{}}>
+        <CardContainer type="default" style={{ marginVertical: 12 }} dividers>
+          <ThemedText color="success">Test Default</ThemedText>
+          <ThemedText>Test Default</ThemedText>
           <ThemedText>Test Default</ThemedText>
         </CardContainer>
         <CardContainer

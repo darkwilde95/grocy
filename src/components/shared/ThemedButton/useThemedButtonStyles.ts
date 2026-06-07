@@ -1,16 +1,12 @@
+import { TextThemedColorType } from "@/styles/theme";
 import { useTheme } from "@/styles/ThemeContext";
 import { StyleSheet } from "react-native";
-import { ButtonProps } from "./ThemedButton";
+import { ButtonColor, ButtonType } from "./ThemedButton";
 
-export type CapitalizeString<S extends string> = Capitalize<S>;
-
-const useThemedButtonStyles = (
-  as: ButtonProps["as"],
-  color: ButtonProps["color"],
-) => {
+const useThemedButtonStyles = (as: ButtonType, color: ButtonColor) => {
   const { theme } = useTheme();
   const textKeyColor =
-    `on${color.charAt(0).toUpperCase()}${color.slice(1)}` as `on${CapitalizeString<typeof color>}`;
+    `on${color.charAt(0).toUpperCase()}${color.slice(1)}` as TextThemedColorType<ButtonColor>;
 
   return StyleSheet.create({
     baseStyles: {

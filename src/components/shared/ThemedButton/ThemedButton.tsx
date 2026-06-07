@@ -2,11 +2,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pressable, Text, ViewStyle } from "react-native";
 import useThemedButtonStyles from "./useThemedButtonStyles";
 
-const buttonTypes = ["default", "outlined"] as const;
-const buttonColors = ["primary", "success", "warning", "error"] as const;
+export type ButtonType = "default" | "outlined";
+export type ButtonColor = "primary" | "success" | "warning" | "error";
 
-type ButtonType = (typeof buttonTypes)[number];
-type ButtonColor = (typeof buttonColors)[number];
 type IconNameType = React.ComponentProps<typeof MaterialCommunityIcons>["name"];
 
 type ConditionalContentType =

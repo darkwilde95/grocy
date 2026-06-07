@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Children } from "react";
 import {
   Pressable,
   PressableStateCallbackType,
@@ -13,11 +13,23 @@ const wrapperMap = {
   pressable: Pressable,
 };
 
+export type ColorType =
+  | "primary"
+  | "primaryFixed"
+  | "success"
+  | "warning"
+  | "error"
+  | "surface"
+  | "surfaceVariant";
+
 type WrapperType = keyof typeof wrapperMap;
 
 type CardContainerProps<T extends WrapperType> = {
   type?: T;
   children?: React.ReactNode;
+  dividers?: boolean;
+  horizontal?: boolean;
+  backgroundColor?: ColorType;
 } & React.ComponentPropsWithoutRef<(typeof wrapperMap)[T]>;
 
 type StaticStyle = StyleProp<ViewStyle>;
@@ -45,9 +57,13 @@ const CardContainer = <T extends WrapperType = "default">({
   type = "default" as T,
   style,
   children,
+  dividers = false,
+  horizontal = false,
+  backgroundColor = "surfaceVariant",
   ...rest
 }: CardContainerProps<T>) => {
-  const styles = useCardContainerStyles();
+  const childCount = Children.count(children);
+  const styles = useCardContainerStyles(horizontal, backgroundColor);
   const Wrapper = wrapperMap[type] as React.ElementType;
 
   const baseStyles = (pressed: boolean): StaticStyle => [
@@ -64,7 +80,12 @@ const CardContainer = <T extends WrapperType = "default">({
       )}
       {...rest}
     >
-      {children}
+      {Children.map(children, (child, index) => (
+        <>
+          {child}
+          {index < childCount - 1 && <View style={styles.divider} />}
+        </>
+      ))}
     </Wrapper>
   );
 };
