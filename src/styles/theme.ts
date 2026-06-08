@@ -59,7 +59,7 @@ const spacing = {
   xxl: 48,
   marginHorizontal: 20,
   gutter: 16,
-  appBarHeight: 64,
+  appBarHeight: 54,
   bottomNavHeight: 72,
 };
 

@@ -5,7 +5,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 const useCustoTabBarStyles = () => {
   const { theme } = useTheme();
   const { bottom } = useSafeAreaInsets();
-
   return StyleSheet.create({
     container: {
       flexDirection: "row",
@@ -14,8 +13,8 @@ const useCustoTabBarStyles = () => {
       backgroundColor: theme.colors.surface,
       borderTopColor: theme.colors.border,
       borderTopWidth: 1,
-      paddingTop: theme.spacing.xs,
-      paddingBottom: bottom + theme.spacing.xs,
+      paddingVertical: theme.spacing.xs,
+      paddingBottom: theme.spacing.xs + bottom,
     },
     tab: {
       width: "20%",

@@ -1,0 +1,64 @@
+import React, { Children } from "react";
+import { GestureResponderEvent, Pressable, View } from "react-native";
+import { ColorType, ViewProps } from "./cardTypes";
+import SimpleCardContainer from "./SimpleCardContainer";
+import useCardContainerStyles from "./useCardContainerStyles";
+
+type MultiStatic = ViewProps & {
+  pressable?: false;
+  color?: ColorType;
+  children: React.ReactNode;
+};
+
+type MultiPressable = ViewProps & {
+  pressable: true;
+  color?: ColorType;
+  children: React.ReactNode;
+  onItemPress: (index: number, e: GestureResponderEvent) => void;
+};
+
+type MultiCardContainerProps<P extends boolean | undefined> = (P extends true
+  ? MultiPressable
+  : MultiStatic) & { pressable?: P };
+
+const MultiCardContainer = <P extends boolean | undefined = undefined>(
+  props: MultiCardContainerProps<P>,
+) => {
+  const internalProps = props as MultiStatic | MultiPressable;
+  const internalColor = internalProps.color ?? "surfaceVariant";
+  const styles = useCardContainerStyles(internalColor);
+  const childrenSize = Children.count(props.children);
+
+  const wrapperItem = (content: React.ReactNode, index: number) => {
+    if (internalProps.pressable === true) {
+      return (
+        <Pressable
+          style={({ pressed }) => [styles.item, pressed && styles.pressed]}
+          onPress={(e) => internalProps.onItemPress(index, e)}
+        >
+          {content}
+        </Pressable>
+      );
+    } else {
+      return <View style={styles.item}>{content}</View>;
+    }
+  };
+
+  return (
+    <SimpleCardContainer
+      color={internalColor}
+      pressable={false}
+      style={[{ padding: 0 }, internalProps.style]}
+    >
+      {internalProps.children &&
+        Children.map(internalProps.children, (child, index) => (
+          <React.Fragment key={index}>
+            {wrapperItem(child, index)}
+            {index < childrenSize - 1 && <View style={styles.divider} />}
+          </React.Fragment>
+        ))}
+    </SimpleCardContainer>
+  );
+};
+
+export default MultiCardContainer;

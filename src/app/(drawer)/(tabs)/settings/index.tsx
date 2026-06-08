@@ -1,4 +1,4 @@
-import CardContainer from "@/components/shared/CardContainer/CardContainer";
+import SimpleCardContainer from "@/components/shared/Card/SimpleCardContainer";
 import ThemedScreenContainer from "@/components/shared/ThemedContainer.tsx/ThemedContainer";
 import ThemedText from "@/components/shared/ThemedText/ThemedText";
 import { useTheme } from "@/styles/ThemeContext";
@@ -7,7 +7,7 @@ const Index = () => {
   const { theme } = useTheme();
 
   return (
-    <ThemedScreenContainer as="scroll" bounces={false} overScrollMode="never">
+    <ThemedScreenContainer bounces={false} overScrollMode="never">
       <ThemedText as="screenTitle">Ajustes</ThemedText>
       <ThemedText>
         Gestiona tu cuenta y preferencias de la aplicación.
@@ -17,25 +17,25 @@ const Index = () => {
       <ThemedText as="sectionTitle" style={{ marginTop: theme.spacing.lg }}>
         PERFIL Y CUENTA
       </ThemedText>
-      <CardContainer>
+      <SimpleCardContainer>
         <ThemedText>Test</ThemedText>
-      </CardContainer>
+      </SimpleCardContainer>
 
       {/** NOTIFICACIONES */}
       <ThemedText as="sectionTitle" style={{ marginTop: theme.spacing.lg }}>
         NOTIFICACIONES
       </ThemedText>
-      <CardContainer>
+      <SimpleCardContainer>
         <ThemedText>Test</ThemedText>
-      </CardContainer>
+      </SimpleCardContainer>
 
       {/** GENERAL */}
       <ThemedText as="sectionTitle" style={{ marginTop: theme.spacing.lg }}>
         GENERAL
       </ThemedText>
-      <CardContainer>
+      <SimpleCardContainer>
         <ThemedText>Test</ThemedText>
-      </CardContainer>
+      </SimpleCardContainer>
     </ThemedScreenContainer>
   );
 };

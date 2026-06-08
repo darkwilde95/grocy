@@ -3,7 +3,7 @@ import ThemedText from "@/components/shared/ThemedText/ThemedText";
 
 const Index = () => {
   return (
-    <ThemedScreenContainer as="scroll" bounces={false} overScrollMode="never">
+    <ThemedScreenContainer bounces={false} overScrollMode="never">
       <ThemedText as="screenTitle">Mis Tiendas</ThemedText>
     </ThemedScreenContainer>
   );

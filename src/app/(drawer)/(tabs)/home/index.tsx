@@ -1,4 +1,5 @@
-import CardContainer from "@/components/shared/CardContainer/CardContainer";
+import MultiCardContainer from "@/components/shared/Card/MultiCardContainer";
+import SimpleCardContainer from "@/components/shared/Card/SimpleCardContainer";
 import ThemedButton from "@/components/shared/ThemedButton/ThemedButton";
 import ThemedScreenContainer from "@/components/shared/ThemedContainer.tsx/ThemedContainer";
 import ThemedText from "@/components/shared/ThemedText/ThemedText";
@@ -6,7 +7,7 @@ import { View } from "react-native";
 
 const Index = () => {
   return (
-    <ThemedScreenContainer as="scroll" bounces={false} overScrollMode="never">
+    <ThemedScreenContainer bounces={false} overScrollMode="never">
       <ThemedText as="screenTitle">Home</ThemedText>
       <View style={{ flexDirection: "row", gap: 6, flexWrap: "wrap" }}>
         <ThemedButton label="Testing" color="primary" icon="home" />
@@ -44,18 +45,33 @@ const Index = () => {
         <ThemedButton as="outlined" label="Testing" color="error" icon="home" />
       </View>
       <View style={{ marginTop: 12 }}>
-        <CardContainer type="default" style={{ marginVertical: 12 }} dividers>
-          <ThemedText color="success">Test Default</ThemedText>
-          <ThemedText>Test Default</ThemedText>
-          <ThemedText>Test Default</ThemedText>
-        </CardContainer>
-        <CardContainer
-          type="pressable"
-          onPress={() => console.log("Pressed")}
-          style={({ pressed }) => []}
+        <SimpleCardContainer>
+          <ThemedText>Test Text</ThemedText>
+          <ThemedText>Test Text</ThemedText>
+          <ThemedText>Test Text</ThemedText>
+          <ThemedText>Test Text</ThemedText>
+        </SimpleCardContainer>
+        <SimpleCardContainer pressable onPress={() => console.log("pressed")}>
+          <ThemedText>Test Text</ThemedText>
+          <ThemedText>Test Text</ThemedText>
+          <ThemedText>Test Text</ThemedText>
+          <ThemedText>Test Text</ThemedText>
+        </SimpleCardContainer>
+        <MultiCardContainer>
+          <ThemedText>Test Text</ThemedText>
+          <ThemedText>Test Text</ThemedText>
+          <ThemedText>Test Text</ThemedText>
+          <ThemedText>Test Text</ThemedText>
+        </MultiCardContainer>
+        <MultiCardContainer
+          pressable
+          onItemPress={(index) => console.log(index)}
         >
-          <ThemedText>Test Pressed</ThemedText>
-        </CardContainer>
+          <ThemedText>Test Text</ThemedText>
+          <ThemedText>Test Text</ThemedText>
+          <ThemedText>Test Text</ThemedText>
+          <ThemedText>Test Text</ThemedText>
+        </MultiCardContainer>
       </View>
     </ThemedScreenContainer>
   );

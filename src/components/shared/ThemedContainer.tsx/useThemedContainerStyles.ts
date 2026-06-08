@@ -1,13 +1,16 @@
 import { useTheme } from "@/styles/ThemeContext";
 import { StyleSheet } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const useThemeContainerStyles = () => {
   const { theme } = useTheme();
+  const { bottom } = useSafeAreaInsets();
 
   return StyleSheet.create({
-    screenContainer: {
-      flex: 1,
+    scrollContainer: {
       backgroundColor: theme.colors.surface,
+    },
+    contentContainer: {
       padding: theme.spacing.md,
     },
   });
