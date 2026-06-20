@@ -3,6 +3,7 @@ import { ThemeProvider } from "@/styles/ThemeContext";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,9 +26,11 @@ const RootLayout = () => {
   }
 
   return (
-    <ThemeProvider>
-      <DrawerNavigation />
-    </ThemeProvider>
+    <GestureHandlerRootView>
+      <ThemeProvider>
+        <DrawerNavigation />
+      </ThemeProvider>
+    </GestureHandlerRootView>
   );
 };
 

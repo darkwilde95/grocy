@@ -1,13 +1,15 @@
 import MultiCardContainer from "@/components/shared/Card/MultiCardContainer";
 import SimpleCardContainer from "@/components/shared/Card/SimpleCardContainer";
 import ThemedButton from "@/components/shared/ThemedButton/ThemedButton";
-import ThemedScreenContainer from "@/components/shared/ThemedContainer.tsx/ThemedContainer";
+import ThemedScreenContainer from "@/components/shared/ThemedScreenContainer.tsx/ThemedScreenContainer";
+
 import ThemedText from "@/components/shared/ThemedText/ThemedText";
+import ThemedTextInput from "@/components/shared/ThemedTextInput/ThemedTextInput";
 import { View } from "react-native";
 
 const Index = () => {
   return (
-    <ThemedScreenContainer bounces={false} overScrollMode="never">
+    <ThemedScreenContainer hasKeyboard>
       <ThemedText as="screenTitle">Home</ThemedText>
       <View style={{ flexDirection: "row", gap: 6, flexWrap: "wrap" }}>
         <ThemedButton label="Testing" color="primary" icon="home" />
@@ -73,6 +75,7 @@ const Index = () => {
           <ThemedText>Test Text</ThemedText>
         </MultiCardContainer>
       </View>
+      <ThemedTextInput />
     </ThemedScreenContainer>
   );
 };

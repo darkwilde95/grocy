@@ -1,5 +1,5 @@
 import SimpleCardContainer from "@/components/shared/Card/SimpleCardContainer";
-import ThemedScreenContainer from "@/components/shared/ThemedContainer.tsx/ThemedContainer";
+import ThemedScreenContainer from "@/components/shared/ThemedScreenContainer.tsx/ThemedContainer";
 import ThemedText from "@/components/shared/ThemedText/ThemedText";
 import { useTheme } from "@/styles/ThemeContext";
 
