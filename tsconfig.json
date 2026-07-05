@@ -3,9 +3,15 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@/entities/*": ["./src/domain/entities/*"],
-      "@/ports/*": ["./src/domain/ports/*"],
-      "@/infrastructure/*": ["./src/infrastructure/*"],
+      "@entities/*": ["./src/core/domain/entities/*"],
+      "@dto/*": ["./src/core/infrastructure/dto/*"],
+      "@adapters/*": ["./src/core/infrastructure/adapters/*"],
+      "@clients/*": ["./src/core/infrastructure/clients/*"],
+      "@services/*": ["./src/core/infrastructure/services/*"],
+      "@use-cases/*": ["./src/core/use-cases/*"],
+      "@infrastructure/*": ["./src/core/infrastructure/*"],
+      "@domain/*": ["./src/core/domain/*"],
+      "@components/*": ["./src/components/*"],
       "@/*": ["./src/*"]
     }
   },
