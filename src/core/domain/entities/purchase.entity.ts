@@ -22,7 +22,7 @@ export const addItem = (
     throw new Error(
       "Purchase Entity - addItem: No es posible agregar un producto con cantidad 0 o negativa",
     );
-  // Verificar si existe antes en la lista
+
   const existingItem = purchase.items.find(
     (i) =>
       i.productId === item.productId && i.superMarketId === item.superMarketId,
@@ -53,7 +53,6 @@ export const updateItem = (
       "Purchase Entity - updateItem: El elemento de la lista no existe",
     );
 
-  // Calcular el total sin este elemento
   const subTotal = purchase.total - existingItem.price * existingItem.quantity;
   if (newQuantity > 0) {
     purchase.total = subTotal + existingItem.price * newQuantity;
