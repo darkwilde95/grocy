@@ -11,14 +11,13 @@ const base = axios.create({
   timeout: 10000,
 });
 
-const handleError = (error: unknown) => {
-  if (error instanceof AxiosError) {
-    const errorMessage = error.response?.data?.message || error.message;
-    const errorStatus = error.response?.status || ErrorType.INTERNAL_ERROR;
-    const validations = error.response?.data?.error?.validations || {};
-    throw new CustomError(errorMessage, errorStatus, validations);
-  }
-  throw new CustomError("Ocurrió un error inesperado en la red", 0);
+// TODO: Verificar que los errores de conexion y timeout tambien son AxiosErrors
+
+const handleError = <T>(error: AxiosError<HttpResponse<T>>) => {
+  const errorMessage = error.response?.data.error?.message || error.message;
+  const errorStatus = error.response?.status || ErrorType.INTERNAL_ERROR;
+  const validations = error.response?.data?.error?.validations || {};
+  throw new CustomError(errorMessage, errorStatus, validations);
 };
 
 export const axiosClient: HttpClient = {
@@ -27,7 +26,7 @@ export const axiosClient: HttpClient = {
       const response = await base.get<HttpResponse<T>>(url, { params });
       return response.data.data;
     } catch (error) {
-      return handleError(error);
+      return handleError(error as AxiosError<HttpResponse<T>>);
     }
   },
 
@@ -36,7 +35,7 @@ export const axiosClient: HttpClient = {
       const response = await base.post<HttpResponse<T>>(url, body);
       return response.data.data;
     } catch (error) {
-      return handleError(error);
+      return handleError(error as AxiosError<HttpResponse<T>>);
     }
   },
 
@@ -45,7 +44,7 @@ export const axiosClient: HttpClient = {
       const response = await base.put<HttpResponse<T>>(url, body);
       return response.data.data;
     } catch (error) {
-      return handleError(error);
+      return handleError(error as AxiosError<HttpResponse<T>>);
     }
   },
 
@@ -54,7 +53,7 @@ export const axiosClient: HttpClient = {
       const response = await base.delete<HttpResponse<T>>(url);
       return response.data.data;
     } catch (error) {
-      return handleError(error);
+      return handleError(error as AxiosError<HttpResponse<T>>);
     }
   },
 };
