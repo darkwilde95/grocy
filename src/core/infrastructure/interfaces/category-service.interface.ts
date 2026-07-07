@@ -4,7 +4,9 @@ import { queryDto } from "@dto/common/query.dto";
 import { Category } from "@entities/category.entity";
 
 export interface CategoryService {
-  createCategory(category: CreateCategoryDto): Promise<Category>;
-  updateCategory(category: UpdateCategoryDto): Promise<Category>;
+  create(category: CreateCategoryDto): Promise<Category>;
+  update(id: string, category: UpdateCategoryDto): Promise<void>;
+  findById(id: string): Promise<Category>;
   findAll(query?: queryDto): Promise<Category[]>;
+  delete(id: string): Promise<void>;
 }

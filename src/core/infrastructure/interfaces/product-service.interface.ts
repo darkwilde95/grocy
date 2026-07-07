@@ -4,9 +4,10 @@ import { updateProductDto } from "@dto/product/update-product.dto";
 import { Product } from "@entities/product.entity";
 
 export interface ProductService {
-  createProduct(product: createProductDto): Promise<Product>;
-  updateProduct(product: updateProductDto): Promise<Product>;
-  findProductById(id: string): Promise<Product>;
-  findAllProducts(query?: queryDto): Promise<Product[]>;
-  findProductsByCategory(categoryId: string): Promise<Product[]>;
+  create(product: createProductDto): Promise<Product>;
+  update(id: string, product: updateProductDto): Promise<void>;
+  findById(id: string): Promise<Product>;
+  findAll(query?: queryDto): Promise<Product[]>;
+  findByCategory(categoryId: string): Promise<Product[]>;
+  delete(id: string): Promise<void>;
 }
