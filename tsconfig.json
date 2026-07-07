@@ -10,6 +10,7 @@
       "@clients/*": ["./src/core/infrastructure/clients/*"],
       "@interfaces/*": ["./src/core/infrastructure/interfaces/*"],
       "@infrastructure/*": ["./src/core/infrastructure/*"],
+      "@lib/*": ["./src/core/lib/*"],
       "@domain/*": ["./src/core/domain/*"],
       "@components/*": ["./src/components/*"],
       "@/*": ["./src/*"]

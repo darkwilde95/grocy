@@ -1,17 +1,13 @@
+import { queryDto } from "@dto/common/query.dto";
+import { DB_NAME, LIMIT } from "@lib/constants";
 import * as SQLite from "expo-sqlite";
 
-// Nombre de tu base de datos
-export const DB_NAME = "supermarket_app.db";
-
-export const initializeDatabase = async () => {
+export const initializeDatabase = async (): Promise<SQLite.SQLiteDatabase> => {
   const db = await SQLite.openDatabaseAsync(DB_NAME);
 
-  // Activamos el soporte de llaves foráneas en SQLite
   await db.execAsync("PRAGMA foreign_keys = ON;");
 
-  // Ejecutamos la creación de tablas en una transacción
   await db.withTransactionAsync(async () => {
-    // 1. Tabla Categorías
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS categories (
         id TEXT PRIMARY KEY NOT NULL DEFAULT (lower(hex(randomblob(16)))),
@@ -19,7 +15,6 @@ export const initializeDatabase = async () => {
       );
     `);
 
-    // 2. Tabla Supermercados
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS supermarkets (
         id TEXT PRIMARY KEY NOT NULL DEFAULT (lower(hex(randomblob(16)))),
@@ -27,7 +22,6 @@ export const initializeDatabase = async () => {
       );
     `);
 
-    // 3. Tabla Productos (Relación con Categoría)
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS products (
         id TEXT PRIMARY KEY NOT NULL DEFAULT (lower(hex(randomblob(16)))),
@@ -37,7 +31,6 @@ export const initializeDatabase = async () => {
       );
     `);
 
-    // 4. Tabla Precios (Llave primaria compuesta)
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS prices (
         productId TEXT NOT NULL,
@@ -51,7 +44,6 @@ export const initializeDatabase = async () => {
       );
     `);
 
-    // 5. Tabla Compras (Purchase)
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS purchases (
         id TEXT PRIMARY KEY NOT NULL DEFAULT (lower(hex(randomblob(16)))),
@@ -60,7 +52,6 @@ export const initializeDatabase = async () => {
       );
     `);
 
-    // 6. Tabla Ítems de Compra (PurchaseItem - Relación N a 1 con Purchase)
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS purchase_items (
         productId TEXT NOT NULL,
@@ -77,4 +68,67 @@ export const initializeDatabase = async () => {
   });
 
   console.log("Base de datos inicializada correctamente.");
+  return db;
+};
+
+export const insertHelper = (
+  table: string,
+  object: Record<string, SQLite.SQLiteBindValue>,
+) => {
+  const entries = Object.entries(object);
+  const insertClause = entries.map((entry) => entry[0]).join(", ");
+  const values = entries.map((entry) => entry[1]);
+
+  return {
+    sql: `INSERT INTO ${table} (${insertClause}) VALUES (${values.map(() => "?").join(", ")}) RETURNING id`,
+    values,
+  };
+};
+
+export const updateHelper = (
+  table: string,
+  ids: Record<string, string>,
+  object: Record<string, SQLite.SQLiteBindValue>,
+) => {
+  const keys = Object.keys(object).filter(
+    (key) => object[key] !== undefined && key !== "id",
+  );
+
+  if (keys.length === 0) return null;
+
+  const setClause = keys.map((key) => `${key} = ?`).join(", ");
+
+  const idsKeys = Object.keys(ids);
+  const idsClause = idsKeys.map((id) => `${id} = ?`).join(" AND ");
+
+  const values: SQLite.SQLiteBindParams = keys
+    .map((key) => object[key])
+    .concat(idsKeys.map((id) => ids[id]));
+
+  return {
+    sql: `UPDATE ${table} SET ${setClause} WHERE ${idsClause}`,
+    values,
+  };
+};
+
+export const paginationHelper = (table: string, params?: queryDto) => {
+  const limit = params?.limit ?? LIMIT;
+  const offset = params?.offset ?? 0;
+  const searchText = params?.query?.trim() ?? "";
+
+  let sql = `SELECT * FROM ${table}`;
+  const values: SQLite.SQLiteBindParams = [];
+
+  if (searchText.length > 0) {
+    sql += ` WHERE name LIKE ?`;
+    values.push(`%${searchText}%`);
+  }
+
+  sql += ` LIMIT ? OFFSET ?`;
+  values.push(limit, offset);
+
+  return {
+    sql,
+    values,
+  };
 };

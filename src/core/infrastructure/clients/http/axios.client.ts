@@ -1,14 +1,15 @@
 import { CustomError, ErrorType } from "@infrastructure/error/CustomError";
 import { HttpClient } from "@interfaces/http-client.interface";
 import { HttpResponse } from "@interfaces/http-response.interface";
+import { API_URL, TIMEOUT } from "@lib/constants";
 import axios, { AxiosError } from "axios";
 
 const base = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_API_URL || "http://localhost:4000",
+  baseURL: API_URL,
   headers: {
     "Content-Type": "application/json",
   },
-  timeout: 10000,
+  timeout: TIMEOUT,
 });
 
 // TODO: Verificar que los errores de conexion y timeout tambien son AxiosErrors
