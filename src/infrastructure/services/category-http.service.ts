@@ -24,7 +24,7 @@ export const categoriesHttpService = (
   ): Promise<Category[]> => {
     return await httpClient.get<Category[]>(categoriesUrl, {
       query,
-      pagination,
+      ...pagination,
     });
   },
   delete: async (id: string): Promise<void> => {

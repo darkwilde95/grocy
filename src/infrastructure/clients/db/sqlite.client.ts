@@ -1,6 +1,10 @@
+import { Order, Pagination } from "@core/types";
 import { DB_NAME, LIMIT } from "@infrastructure/constants";
-import { paginationDto } from "@infrastructure/schemas/common/pagination.dto";
+import { CustomError, ErrorType } from "@infrastructure/error/CustomError";
+import { orderSchema } from "@schemas/common/order.dto";
+import { paginationSchema } from "@schemas/common/pagination.dto";
 import * as SQLite from "expo-sqlite";
+import { z } from "zod";
 
 export const initializeDatabase = async (): Promise<SQLite.SQLiteDatabase> => {
   const db = await SQLite.openDatabaseAsync(DB_NAME);
@@ -111,28 +115,42 @@ export const updateHelper = (
   };
 };
 
-export const paginationHelper = (
-  table: string,
-  query: string = "",
-  pagination: paginationDto,
-) => {
-  const limit = pagination?.limit ?? LIMIT;
-  const offset = pagination?.offset ?? 0;
-  const searchText = query?.trim() ?? "";
-
-  let sql = `SELECT * FROM ${table}`;
-  const values: SQLite.SQLiteBindParams = [];
-
-  if (searchText.length > 0) {
-    sql += ` WHERE name LIKE ?`;
-    values.push(`%${searchText}%`);
+export const paginationHelper = ({ limit = LIMIT, offset = 0 }: Pagination) => {
+  const validation = paginationSchema.safeParse({ limit, offset });
+  if (!validation.success) {
+    const { properties } = z.treeifyError(validation.error);
+    throw new CustomError(
+      "Los valores de paginación no son válidos",
+      ErrorType.BAD_REQUEST,
+      {
+        limit: properties?.limit?.errors[0] || "",
+        offset: properties?.offset?.errors[0] || "",
+      },
+    );
   }
 
-  sql += ` LIMIT ? OFFSET ?`;
-  values.push(limit, offset);
+  return {
+    paginationSql: ` LIMIT ? OFFSET ?`,
+    values: [limit, offset],
+  };
+};
+
+export const orderHelper = <T>({ field, order }: Order<T>) => {
+  const validation = orderSchema.safeParse({ field, order });
+  if (!validation.success) {
+    const { properties } = z.treeifyError(validation.error);
+    throw new CustomError(
+      "Los valores de ordenamieto no son válidos",
+      ErrorType.BAD_REQUEST,
+      {
+        field: properties?.field?.errors[0] || "",
+        order: properties?.order?.errors[0] || "",
+      },
+    );
+  }
 
   return {
-    sql,
-    values,
+    orderSql: ` ORDERBY ? ${order}`,
+    values: [field],
   };
 };

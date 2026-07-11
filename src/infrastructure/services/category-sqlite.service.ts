@@ -1,5 +1,6 @@
 import {
   insertHelper,
+  orderHelper,
   paginationHelper,
   updateHelper,
 } from "@clients/db/sqlite.client";
@@ -8,7 +9,7 @@ import { CreateCategoryDto, UpdateCategoryDto } from "@dto/category.dto";
 import { Category } from "@entities/category.entity";
 import { CustomError, ErrorType } from "@infrastructure/error/CustomError";
 import { CategoryService } from "@interfaces/category-service.interface";
-import { SQLiteDatabase } from "expo-sqlite";
+import { SQLiteBindParams, SQLiteDatabase } from "expo-sqlite";
 
 const tableName = "categories";
 
@@ -54,7 +55,22 @@ export const categorySqlService = (db: SQLiteDatabase): CategoryService => ({
     query: string,
     pagination: Pagination,
   ): Promise<Category[]> => {
-    const { sql, values } = paginationHelper(tableName, query, pagination);
+    let sql = `SELECT * FROM ${tableName}`;
+    const values: SQLiteBindParams = [];
+
+    if (query !== "") {
+      sql += ` WHERE name = ?`;
+      values.push(query);
+    }
+
+    const paginationResult = paginationHelper(pagination);
+    sql += ` ${paginationResult.paginationSql}`;
+    values.push(...paginationResult.values);
+
+    const orderResult = orderHelper<Category>({ field: "name", order: "ASC" });
+    sql += ` ${orderResult.orderSql}`;
+    values.push(...orderResult.values);
+
     return await db.getAllAsync<Category>(sql, values);
   },
   delete: async (id: string): Promise<void> => {

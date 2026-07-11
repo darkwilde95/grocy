@@ -8,7 +8,7 @@ import { CreateProductDto, UpdateProductDto } from "@dto/product.dto";
 import { Product } from "@entities/product.entity";
 import { CustomError, ErrorType } from "@infrastructure/error/CustomError";
 import { ProductService } from "@interfaces/product-service.interface";
-import { SQLiteDatabase } from "expo-sqlite";
+import { SQLiteBindParams, SQLiteDatabase } from "expo-sqlite";
 
 const tableName = "products";
 
@@ -57,7 +57,27 @@ export const productSqlService = (db: SQLiteDatabase): ProductService => ({
     categoryId: string,
     pagination: Pagination,
   ): Promise<Product[]> => {
-    const { sql, values } = paginationHelper(tableName, query, pagination);
+    let sql = `SELECT * FROM ${tableName}`;
+    const values: SQLiteBindParams = [];
+
+    const whereClause = [];
+
+    if (categoryId !== "") {
+      whereClause.push("categoryId = ?");
+      values.push(categoryId);
+    }
+
+    if (query !== "") {
+      whereClause.push("name LIKE %?%");
+      values.push(query);
+    }
+
+    if (whereClause.length > 0) sql += ` WHERE ${whereClause.join(" AND ")}`;
+
+    const paginationResult = paginationHelper(pagination);
+    sql += " " + paginationResult.paginationSql;
+    values.push(...paginationResult.values);
+
     return await db.getAllAsync<Product>(sql, values);
   },
   delete: async (id: string): Promise<void> => {
