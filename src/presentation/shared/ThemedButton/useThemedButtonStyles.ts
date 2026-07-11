@@ -1,5 +1,5 @@
 import { TextThemedColorType } from "@/styles/theme";
-import { useTheme } from "@/styles/ThemeContext";
+import { useTheme } from "@styles/ThemeContext";
 import { StyleSheet } from "react-native";
 import { ButtonColor, ButtonType } from "./ThemedButton";
 

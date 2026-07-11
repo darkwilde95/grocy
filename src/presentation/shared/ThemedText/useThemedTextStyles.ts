@@ -1,4 +1,4 @@
-import { useTheme } from "@/styles/ThemeContext";
+import { useTheme } from "@styles/ThemeContext";
 import { StyleSheet } from "react-native";
 import { TextColorType } from "./ThemedText";
 
