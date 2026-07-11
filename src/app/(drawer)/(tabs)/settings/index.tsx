@@ -1,7 +1,9 @@
-import ThemedScreenContainer from "@/components/shared/ThemedScreenContainer.tsx/ThemedContainer";
-import SimpleCardContainer from "@/presentation/shared/Card/SimpleCardContainer";
-import ThemedText from "@/presentation/shared/ThemedText/ThemedText";
 import { useTheme } from "@/styles/ThemeContext";
+import {
+  SimpleCardContainer,
+  ThemedScreenContainer,
+  ThemedText,
+} from "@presentation/shared";
 
 const Index = () => {
   const { theme } = useTheme();

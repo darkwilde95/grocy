@@ -6,7 +6,7 @@ import {
 import { Image, View } from "react-native";
 import useCustomDrawerStyles from "./useCustomDrawerStyles";
 
-const CustomDrawerContent = (props: DrawerContentComponentProps) => {
+export const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const styles = useCustomDrawerStyles();
 
   return (
@@ -27,5 +27,3 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
     </DrawerContentScrollView>
   );
 };
-
-export default CustomDrawerContent;

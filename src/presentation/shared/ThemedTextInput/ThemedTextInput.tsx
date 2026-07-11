@@ -1,7 +1,7 @@
 import { TextInput } from "react-native";
 import useThemedTextInputStyles from "./useThemedTextInputStyles";
 
-const ThemedTextInput = ({
+export const ThemedTextInput = ({
   style,
   ...rest
 }: React.ComponentPropsWithoutRef<typeof TextInput>) => {
@@ -14,5 +14,3 @@ const ThemedTextInput = ({
     />
   );
 };
-
-export default ThemedTextInput;

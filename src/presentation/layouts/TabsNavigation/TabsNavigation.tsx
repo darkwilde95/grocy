@@ -1,8 +1,8 @@
-import CustomTabBar from "@/presentation/core/CustomTabBar/CustomTabBar";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { CustomTabBar } from "@presentation/core";
 import { Tabs } from "expo-router";
 
-const TabsNavigation = () => (
+export const TabsNavigation = () => (
   <Tabs
     initialRouteName="home/index"
     tabBar={(props) => <CustomTabBar {...props} />}

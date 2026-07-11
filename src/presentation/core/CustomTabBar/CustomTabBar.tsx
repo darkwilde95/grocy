@@ -2,7 +2,7 @@ import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { Pressable, Text, View } from "react-native";
 import useCustoTabBarStyles from "./useCustomTabBarStyles";
 
-const CustomTabBar = ({
+export const CustomTabBar = ({
   state,
   descriptors,
   navigation,
@@ -58,5 +58,3 @@ const CustomTabBar = ({
     </View>
   );
 };
-
-export default CustomTabBar;

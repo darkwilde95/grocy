@@ -1,11 +1,11 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Drawer } from "expo-router/drawer";
 
-import CustomDrawer from "@/presentation/core/CustomDrawer/CustomDrawer";
+import { CustomDrawerContent } from "@presentation/core";
 import { StatusBar } from "react-native";
 import useDrawerNavigationStyles from "./useDrawerNavigationStyles";
 
-const DrawerNavigation = () => {
+export const DrawerNavigation = () => {
   const styles = useDrawerNavigationStyles();
 
   return (
@@ -13,7 +13,7 @@ const DrawerNavigation = () => {
       <StatusBar hidden={false} />
       <Drawer
         initialRouteName="(tabs)"
-        drawerContent={CustomDrawer}
+        drawerContent={CustomDrawerContent}
         screenOptions={{
           drawerStyle: styles.drawerContainer,
           drawerActiveTintColor: styles.itemActive.color,
@@ -59,5 +59,3 @@ const DrawerNavigation = () => {
     </>
   );
 };
-
-export default DrawerNavigation;

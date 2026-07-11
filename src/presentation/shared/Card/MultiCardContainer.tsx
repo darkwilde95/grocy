@@ -1,7 +1,7 @@
 import React, { Children } from "react";
 import { GestureResponderEvent, Pressable, View } from "react-native";
 import { ColorType, ViewProps } from "./cardTypes";
-import SimpleCardContainer from "./SimpleCardContainer";
+import { SimpleCardContainer } from "./SimpleCardContainer";
 import useCardContainerStyles from "./useCardContainerStyles";
 
 type MultiStatic = ViewProps & {
@@ -21,7 +21,7 @@ type MultiCardContainerProps<P extends boolean | undefined> = (P extends true
   ? MultiPressable
   : MultiStatic) & { pressable?: P };
 
-const MultiCardContainer = <P extends boolean | undefined = undefined>(
+export const MultiCardContainer = <P extends boolean | undefined = undefined>(
   props: MultiCardContainerProps<P>,
 ) => {
   const internalProps = props as MultiStatic | MultiPressable;
@@ -60,5 +60,3 @@ const MultiCardContainer = <P extends boolean | undefined = undefined>(
     </SimpleCardContainer>
   );
 };
-
-export default MultiCardContainer;

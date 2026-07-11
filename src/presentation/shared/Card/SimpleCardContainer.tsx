@@ -22,7 +22,7 @@ type SimpleCardContainerProps<P extends boolean | undefined> = (P extends true
   ? PressableCard
   : StaticCard) & { pressable?: P };
 
-const SimpleCardContainer = <P extends boolean | undefined = undefined>({
+export const SimpleCardContainer = <P extends boolean | undefined = undefined>({
   pressable,
   style,
   color = "surfaceVariant",
@@ -45,5 +45,3 @@ const SimpleCardContainer = <P extends boolean | undefined = undefined>({
     );
   }
 };
-
-export default SimpleCardContainer;

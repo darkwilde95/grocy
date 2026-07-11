@@ -28,7 +28,7 @@ interface TextProps {
 
 type ThemedTextProps = TextProps & React.ComponentPropsWithoutRef<typeof Text>;
 
-const ThemedText = ({
+export const ThemedText = ({
   as = "default",
   children,
   style,
@@ -43,5 +43,3 @@ const ThemedText = ({
     </Text>
   );
 };
-
-export default ThemedText;

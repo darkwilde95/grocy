@@ -1,4 +1,4 @@
-import TabsNavigation from "@/layouts/TabsNavigation/TabsNavigation";
+import { TabsNavigation } from "@presentation/layouts";
 
 const TabsLayout = () => <TabsNavigation />;
 

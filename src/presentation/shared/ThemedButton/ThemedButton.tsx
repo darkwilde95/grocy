@@ -26,7 +26,7 @@ type ThemedButtonProps = ConditionalContentType &
   ButtonProps &
   Omit<React.ComponentPropsWithoutRef<typeof Pressable>, "children">;
 
-const ThemedButton = ({
+export const ThemedButton = ({
   as = "default",
   color,
   label,
@@ -60,5 +60,3 @@ const ThemedButton = ({
     </Pressable>
   );
 };
-
-export default ThemedButton;

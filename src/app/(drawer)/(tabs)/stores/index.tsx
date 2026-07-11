@@ -1,5 +1,4 @@
-import ThemedScreenContainer from "@/components/shared/ThemedScreenContainer.tsx/ThemedContainer";
-import ThemedText from "@/presentation/shared/ThemedText/ThemedText";
+import { ThemedScreenContainer, ThemedText } from "@presentation/shared";
 
 const Index = () => {
   return (

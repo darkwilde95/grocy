@@ -1,5 +1,5 @@
-import DrawerNavigation from "@/layouts/DrawerNavigation/DrawerNavigation";
 import { ThemeProvider } from "@/styles/ThemeContext";
+import { DrawerNavigation } from "@presentation/layouts";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";

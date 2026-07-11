@@ -10,7 +10,7 @@ interface ThemedScreenContainerProps extends ScrollViewProps {
   hasKeyboard?: boolean;
 }
 
-const ThemedScreenContainer = ({
+export const ThemedScreenContainer = ({
   hasKeyboard = false,
   children,
   style,
@@ -40,5 +40,3 @@ const ThemedScreenContainer = ({
     </KeyboardAvoidingView>
   );
 };
-
-export default ThemedScreenContainer;
