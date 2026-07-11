@@ -1,10 +1,10 @@
-import MultiCardContainer from "@/components/shared/Card/MultiCardContainer";
-import SimpleCardContainer from "@/components/shared/Card/SimpleCardContainer";
-import ThemedButton from "@/components/shared/ThemedButton/ThemedButton";
-import ThemedScreenContainer from "@/components/shared/ThemedScreenContainer.tsx/ThemedScreenContainer";
+import MultiCardContainer from "@/presentation/shared/Card/MultiCardContainer";
+import SimpleCardContainer from "@/presentation/shared/Card/SimpleCardContainer";
+import ThemedButton from "@/presentation/shared/ThemedButton/ThemedButton";
+import ThemedScreenContainer from "@/presentation/shared/ThemedScreenContainer.tsx/ThemedScreenContainer";
 
-import ThemedText from "@/components/shared/ThemedText/ThemedText";
-import ThemedTextInput from "@/components/shared/ThemedTextInput/ThemedTextInput";
+import ThemedText from "@/presentation/shared/ThemedText/ThemedText";
+import ThemedTextInput from "@/presentation/shared/ThemedTextInput/ThemedTextInput";
 import { View } from "react-native";
 
 const Index = () => {

@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Drawer } from "expo-router/drawer";
 
-import CustomDrawer from "@/components/core/CustomDrawer/CustomDrawer";
+import CustomDrawer from "@/presentation/core/CustomDrawer/CustomDrawer";
 import { StatusBar } from "react-native";
 import useDrawerNavigationStyles from "./useDrawerNavigationStyles";
 

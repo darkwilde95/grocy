@@ -1,6 +1,6 @@
-import SimpleCardContainer from "@/components/shared/Card/SimpleCardContainer";
 import ThemedScreenContainer from "@/components/shared/ThemedScreenContainer.tsx/ThemedContainer";
-import ThemedText from "@/components/shared/ThemedText/ThemedText";
+import SimpleCardContainer from "@/presentation/shared/Card/SimpleCardContainer";
+import ThemedText from "@/presentation/shared/ThemedText/ThemedText";
 import { useTheme } from "@/styles/ThemeContext";
 
 const Index = () => {

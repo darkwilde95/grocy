@@ -1,4 +1,4 @@
-import CustomTabBar from "@/components/core/CustomTabBar/CustomTabBar";
+import CustomTabBar from "@/presentation/core/CustomTabBar/CustomTabBar";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 

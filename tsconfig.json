@@ -3,16 +3,18 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@entities/*": ["./src/core/domain/entities/*"],
-      "@use-cases/*": ["./src/core/domain/use-cases/*"],
-      "@dto/*": ["./src/core/infrastructure/dto/*"],
-      "@services/*": ["./src/core/infrastructure/services/*"],
-      "@clients/*": ["./src/core/infrastructure/clients/*"],
-      "@interfaces/*": ["./src/core/infrastructure/interfaces/*"],
-      "@infrastructure/*": ["./src/core/infrastructure/*"],
-      "@lib/*": ["./src/core/lib/*"],
-      "@domain/*": ["./src/core/domain/*"],
-      "@components/*": ["./src/components/*"],
+      "@entities/*": ["./src/core/entities/*"],
+      "@dto/*": ["./src/core/dto/*"],
+      "@interfaces/*": ["./src/core/interfaces/*"],
+      "@use-cases/*": ["./src/core/use-cases/*"],
+
+      "@services/*": ["./src/infrastructure/services/*"],
+      "@clients/*": ["./src/infrastructure/clients/*"],
+      "@schemas/*": ["./src/infrastructure/schemas/*"],
+
+      "@core/*": ["./src/core/*"],
+      "@infrastructure/*": ["./src/infrastructure/*"],
+      "@presentation/*": ["./src/presentation/*"],
       "@/*": ["./src/*"]
     }
   },
