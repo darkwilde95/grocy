@@ -4,7 +4,11 @@ import { Price, PriceWithSupermarket } from "@entities/price.entity";
 
 export interface PriceService {
   create(price: CreatePriceDto): Promise<Price>;
-  update(price: UpdatePriceDto): Promise<void>;
+  update(
+    productId: string,
+    supermarketId: string,
+    price: UpdatePriceDto,
+  ): Promise<void>;
   findByProduct(
     productId: string,
     order: Order<Price>,
