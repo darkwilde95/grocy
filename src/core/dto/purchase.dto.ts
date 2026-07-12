@@ -1,3 +1,5 @@
-import { Purchase } from "@entities/purchase.entity";
+import { PurchaseItem, PurchaseWithItems } from "@entities/purchase.entity";
 
-export type CreatePurchaseDto = Omit<Purchase, "id" | "date">;
+export type CreatePurchaseWithItemsDto = Omit<PurchaseWithItems, "id" | "date">;
+
+export type CreatePurchaseItemDto = Omit<PurchaseItem, "purchaseId">;

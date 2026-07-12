@@ -66,8 +66,8 @@ export const priceSqliteService = (db: SQLiteDatabase): PriceService => ({
         p.previousValue,
         p.updatedAt,
         s.name as supermarketName
-      FROM ${tableName} p JOIN ${supermarketTable} 
-      WHERE p.productId = ? ${orderSql}
+      FROM ${tableName} p JOIN ${supermarketTable} s
+      ON p.supermarketId = s.id WHERE p.productId = ? ${orderSql}
       `;
 
     return await db.getAllAsync<PriceWithSupermarket>(sql, [

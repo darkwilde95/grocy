@@ -12,11 +12,14 @@ export interface Purchase {
   readonly id: string;
   date: number;
   total: number;
+}
+
+export interface PurchaseWithItems extends Purchase {
   items: PurchaseItem[];
 }
 
 export const addItem = (
-  purchase: Purchase,
+  purchase: PurchaseWithItems,
   item: PurchaseItem,
   quantity: number,
 ) => {
@@ -39,7 +42,7 @@ export const addItem = (
 };
 
 export const updateItem = (
-  purchase: Purchase,
+  purchase: PurchaseWithItems,
   item: PurchaseItem,
   newQuantity: number,
 ) => {

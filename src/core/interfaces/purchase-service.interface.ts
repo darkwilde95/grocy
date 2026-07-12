@@ -1,11 +1,12 @@
-import { Order, Pagination } from "@/core/types";
-import { CreateSupermarketDto } from "@dto/supermarket.dto";
-import { Purchase } from "@entities/purchase.entity";
+import { DateRange, Order, Pagination } from "@/core/types";
+import { CreatePurchaseWithItemsDto } from "@dto/purchase.dto";
+import { Purchase, PurchaseWithItems } from "@entities/purchase.entity";
 
 export interface PurchaseService {
-  create(purchase: CreateSupermarketDto): Promise<Purchase>;
+  create(purchase: CreatePurchaseWithItemsDto): Promise<Purchase>;
+  findById(id: string): Promise<PurchaseWithItems>;
   findAll(
-    date: number,
+    range: DateRange,
     pagination: Pagination,
     order: Order<Purchase>,
   ): Promise<Purchase[]>;

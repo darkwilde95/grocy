@@ -7,3 +7,8 @@ export type Pagination = {
   offset: number;
   limit: number;
 };
+
+export type DateRange = {
+  start: number;
+  end: number;
+};

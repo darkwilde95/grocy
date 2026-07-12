@@ -1,4 +1,4 @@
-import { CreatePurchaseDto } from "@dto/purchase.dto";
+import { CreatePurchaseWithItemsDto } from "@dto/purchase.dto";
 import { PurchaseItem } from "@entities/purchase.entity";
 import { ZodShape } from "@schemas/zod.helpers";
 import { z } from "zod";
@@ -21,7 +21,9 @@ export const purchaseItemSchema = z.object<ZodShape<PurchaseItem>>({
     .positive("La cantidad debe ser mayor a 0"),
 });
 
-export const createPurchaseSchema = z.object<ZodShape<CreatePurchaseDto>>({
+export const createPurchaseSchema = z.object<
+  ZodShape<CreatePurchaseWithItemsDto>
+>({
   total: z
     .number("El valor total es requerido")
     .positive("El valor total debe ser un número mayor a 0"),
