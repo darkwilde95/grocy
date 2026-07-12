@@ -1,7 +1,8 @@
 import { CustomError, ErrorType } from "@/infrastructure/error/CustomError";
 import { API_URL, TIMEOUT } from "@infrastructure/constants";
-import { HttpClient } from "@interfaces/http-client.interface";
-import { HttpResponse } from "@interfaces/http-response.interface";
+import { HttpClient } from "@infrastructure/interfaces/http-client.interface";
+import { HttpResponse } from "@infrastructure/interfaces/http-response.interface";
+
 import axios, { AxiosError } from "axios";
 
 const base = axios.create({
