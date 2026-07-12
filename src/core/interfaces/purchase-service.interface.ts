@@ -3,7 +3,7 @@ import { CreateSupermarketDto } from "@dto/supermarket.dto";
 import { Purchase } from "@entities/purchase.entity";
 
 export interface PurchaseService {
-  create(pruchase: CreateSupermarketDto): Promise<Purchase>;
+  create(purchase: CreateSupermarketDto): Promise<Purchase>;
   findAll(
     date: number,
     pagination: Pagination,

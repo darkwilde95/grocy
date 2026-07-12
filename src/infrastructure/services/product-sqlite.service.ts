@@ -12,7 +12,7 @@ import { SQLiteBindParams, SQLiteDatabase } from "expo-sqlite";
 
 const tableName = "products";
 
-export const productSqlService = (db: SQLiteDatabase): ProductService => ({
+export const productSqliteService = (db: SQLiteDatabase): ProductService => ({
   create: async (product: CreateProductDto): Promise<Product> => {
     const { sql, values } = insertHelper(tableName, product);
     const createdRow = await db.getFirstAsync<{ id: string }>(sql, values);
@@ -45,7 +45,7 @@ export const productSqlService = (db: SQLiteDatabase): ProductService => ({
   },
   findById: async (id: string): Promise<Product> => {
     const row = await db.getFirstAsync<Product>(
-      `SELECT * FROM products WHERE id = ?`,
+      `SELECT * FROM ${tableName} WHERE id = ?`,
       [id],
     );
     if (!row)

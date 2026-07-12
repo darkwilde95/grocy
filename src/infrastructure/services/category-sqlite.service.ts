@@ -13,13 +13,13 @@ import { SQLiteBindParams, SQLiteDatabase } from "expo-sqlite";
 
 const tableName = "categories";
 
-export const categorySqlService = (db: SQLiteDatabase): CategoryService => ({
+export const categorySqliteService = (db: SQLiteDatabase): CategoryService => ({
   create: async (category: CreateCategoryDto): Promise<Category> => {
     const { sql, values } = insertHelper(tableName, category);
     const createdRow = await db.getFirstAsync<{ id: string }>(sql, values);
     if (!createdRow)
       throw new CustomError(
-        "No se pudo crear el producto",
+        "No se pudo crear la categoría",
         ErrorType.INTERNAL_ERROR,
       );
 
