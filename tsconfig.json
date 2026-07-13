@@ -12,10 +12,18 @@
       "@clients/*": ["./src/infrastructure/clients/*"],
       "@schemas/*": ["./src/infrastructure/schemas/*"],
 
+      "@styles/*": ["./src/presentation/styles/*"],
+      "@navigation/*": ["./src/presentation/navigation/*"],
+      "@providers/*": ["./src/presentation/providers/*"],
+      "@screens/*": ["./src/presentation/screens/*"],
+      "@themed/*": ["./src/presentation/themed/*"],
+
+      "@assets/*": ["./src/assets/*"],
+      "@lib/*": ["./src/lib/*"],
+
       "@core/*": ["./src/core/*"],
       "@infrastructure/*": ["./src/infrastructure/*"],
       "@presentation/*": ["./src/presentation/*"],
-      "@styles/*": ["./src/styles/*"],
       "@/*": ["./src/*"]
     }
   },
@@ -24,6 +32,6 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "src/presentation/shared/ThemedScreenContainer"
+    "src/presentation/themed/ThemedScreenContainer"
   ]
 }

@@ -5,7 +5,7 @@ import {
   ThemedScreenContainer,
   ThemedText,
   ThemedTextInput,
-} from "@presentation/shared";
+} from "@themed/index";
 import { View } from "react-native";
 
 const Index = () => {
@@ -15,37 +15,47 @@ const Index = () => {
       <View style={{ flexDirection: "row", gap: 6, flexWrap: "wrap" }}>
         <ThemedButton label="Testing" color="primary" icon="home" />
         <ThemedButton
-          as="default"
+          styleType="default"
           label="Testing"
           color="success"
           icon="home"
         />
         <ThemedButton
-          as="default"
+          styleType="default"
           label="Testing"
           color="warning"
           icon="home"
         />
-        <ThemedButton as="default" label="Testing" color="error" icon="home" />
         <ThemedButton
-          as="outlined"
+          styleType="default"
+          label="Testing"
+          color="error"
+          icon="home"
+        />
+        <ThemedButton
+          styleType="outlined"
           label="Testing"
           color="primary"
           icon="home"
         />
         <ThemedButton
-          as="outlined"
+          styleType="outlined"
           label="Testing"
           color="success"
           icon="home"
         />
         <ThemedButton
-          as="outlined"
+          styleType="outlined"
           label="Testing"
           color="warning"
           icon="home"
         />
-        <ThemedButton as="outlined" label="Testing" color="error" icon="home" />
+        <ThemedButton
+          styleType="outlined"
+          label="Testing"
+          color="error"
+          icon="home"
+        />
       </View>
       <View style={{ marginTop: 12 }}>
         <SimpleCardContainer>

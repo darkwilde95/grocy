@@ -1,9 +1,9 @@
+import { useTheme } from "@providers/Theme";
 import {
   SimpleCardContainer,
   ThemedScreenContainer,
   ThemedText,
-} from "@presentation/shared";
-import { useTheme } from "@styles/ThemeContext";
+} from "@themed/index";
 
 const Index = () => {
   const { theme } = useTheme();

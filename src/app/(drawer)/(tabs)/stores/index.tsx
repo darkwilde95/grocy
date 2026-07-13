@@ -1,4 +1,4 @@
-import { ThemedScreenContainer, ThemedText } from "@presentation/shared";
+import { ThemedScreenContainer, ThemedText } from "@themed/index";
 
 const Index = () => {
   return (
