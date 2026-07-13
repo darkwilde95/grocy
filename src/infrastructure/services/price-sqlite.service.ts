@@ -1,4 +1,9 @@
-import { orderHelper, updateHelper } from "@clients/db/sqlite.client";
+import { sqlErrorHandler } from "@/lib/sql-error-handler";
+import {
+  insertHelper,
+  orderHelper,
+  updateHelper,
+} from "@clients/db/sqlite.client";
 import { Order } from "@core/types";
 import { CreatePriceDto, UpdatePriceDto } from "@dto/price.dto";
 import { Price, PriceWithSupermarket } from "@entities/price.entity";
@@ -11,15 +16,15 @@ const supermarketTable = "supermarkets";
 
 export const priceSqliteService = (db: SQLiteDatabase): PriceService => ({
   create: async (price: CreatePriceDto): Promise<Price> => {
-    const createdRow = await db.getFirstAsync<Price>(
-      `INSERT INTO ${tableName} (
-        productId, 
-        supermarketId, 
-        value, 
-        previousValue, 
-        updatedAt
-      ) VALUES (?, ?, ?, ?, ?)`,
-      [price.productId, price.supermarketId, price.value, 0, Date.now()],
+    const newPrice = {
+      ...price,
+      previousValue: 0,
+      updatedAt: Date.now(),
+    };
+    const { sql, values } = insertHelper(tableName, newPrice, false);
+    const createdRow = await sqlErrorHandler(
+      "Hubo un error al intentar crear un precio",
+      () => db.getFirstAsync<Price>(sql, values),
     );
 
     if (!createdRow) {
@@ -44,7 +49,10 @@ export const priceSqliteService = (db: SQLiteDatabase): PriceService => ({
 
     if (!helpers) return;
 
-    const result = await db.runAsync(helpers.sql, helpers.values);
+    const result = await sqlErrorHandler(
+      "Hubo un error al intentar actualizar un precio",
+      () => db.runAsync(helpers.sql, helpers.values),
+    );
     if (result.changes === 0) {
       throw new CustomError(
         `No se encontró ningún precio con productId: ${productId} y supermarketId: ${supermarketId}`,
@@ -70,15 +78,19 @@ export const priceSqliteService = (db: SQLiteDatabase): PriceService => ({
       ON p.supermarketId = s.id WHERE p.productId = ? ${orderSql}
       `;
 
-    return await db.getAllAsync<PriceWithSupermarket>(sql, [
-      productId,
-      ...values,
-    ]);
+    return await sqlErrorHandler(
+      "Hubo un error al intentar buscar precios de un producto",
+      () => db.getAllAsync<PriceWithSupermarket>(sql, [productId, ...values]),
+    );
   },
   delete: async (supermarketId: string, productId: string): Promise<void> => {
-    const result = await db.runAsync(
-      `DELETE FROM ${tableName} WHERE productId = ? AND supermarketId = ?`,
-      [productId, supermarketId],
+    const result = await sqlErrorHandler(
+      "Hubo un error al intentar elminar un precio",
+      () =>
+        db.runAsync(
+          `DELETE FROM ${tableName} WHERE productId = ? AND supermarketId = ?`,
+          [productId, supermarketId],
+        ),
     );
     if (result.changes === 0)
       throw new CustomError(

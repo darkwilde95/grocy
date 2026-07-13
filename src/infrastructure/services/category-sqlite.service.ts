@@ -1,3 +1,4 @@
+import { sqlErrorHandler } from "@/lib/sql-error-handler";
 import {
   insertHelper,
   orderHelper,
@@ -16,7 +17,10 @@ const tableName = "categories";
 export const categorySqliteService = (db: SQLiteDatabase): CategoryService => ({
   create: async (category: CreateCategoryDto): Promise<Category> => {
     const { sql, values } = insertHelper(tableName, category);
-    const createdRow = await db.getFirstAsync<{ id: string }>(sql, values);
+    const createdRow = await sqlErrorHandler(
+      "Hubo un error al intentar crear la categoría",
+      () => db.getFirstAsync<{ id: string }>(sql, values),
+    );
     if (!createdRow)
       throw new CustomError(
         "No se pudo crear la categoría",
@@ -32,7 +36,11 @@ export const categorySqliteService = (db: SQLiteDatabase): CategoryService => ({
     const helpers = updateHelper(tableName, { id }, category);
     if (!helpers) return;
 
-    const result = await db.runAsync(helpers.sql, helpers.values);
+    const result = await sqlErrorHandler(
+      "Hubo un error al intentar actualizar la categoría",
+      () => db.runAsync(helpers.sql, helpers.values),
+    );
+
     if (result.changes === 0)
       throw new CustomError(
         `No se encontró ningúna categoría con el ID: ${id}`,
@@ -40,9 +48,12 @@ export const categorySqliteService = (db: SQLiteDatabase): CategoryService => ({
       );
   },
   findById: async (id: string): Promise<Category> => {
-    const row = await db.getFirstAsync<Category>(
-      `SELECT * FROM categories WHERE id = ?`,
-      [id],
+    const row = await sqlErrorHandler(
+      "Hubo un error al intentar buscar la categoría",
+      () =>
+        db.getFirstAsync<Category>(`SELECT * FROM categories WHERE id = ?`, [
+          id,
+        ]),
     );
     if (!row)
       throw new CustomError(
@@ -71,12 +82,16 @@ export const categorySqliteService = (db: SQLiteDatabase): CategoryService => ({
     sql += ` ${orderResult.orderSql}`;
     values.push(...orderResult.values);
 
-    return await db.getAllAsync<Category>(sql, values);
+    return await sqlErrorHandler(
+      "Hubo un error al intentar obtener la lista de categorías",
+      () => db.getAllAsync<Category>(sql, values),
+    );
   },
   delete: async (id: string): Promise<void> => {
-    const result = await db.runAsync(`DELETE FROM categories WHERE id = ?`, [
-      id,
-    ]);
+    const result = await sqlErrorHandler(
+      "Hubo un error al intentar eliminar la categoría",
+      () => db.runAsync(`DELETE FROM categories WHERE id = ?`, [id]),
+    );
     if (result.changes === 0)
       throw new CustomError(
         `No se encontró ningúna categoría con el ID: ${id}`,

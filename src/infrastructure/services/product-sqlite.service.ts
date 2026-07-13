@@ -1,3 +1,4 @@
+import { sqlErrorHandler } from "@/lib/sql-error-handler";
 import {
   insertHelper,
   paginationHelper,
@@ -15,7 +16,10 @@ const tableName = "products";
 export const productSqliteService = (db: SQLiteDatabase): ProductService => ({
   create: async (product: CreateProductDto): Promise<Product> => {
     const { sql, values } = insertHelper(tableName, product);
-    const createdRow = await db.getFirstAsync<{ id: string }>(sql, values);
+    const createdRow = await sqlErrorHandler(
+      "Hubo un error al intentar crear un producto",
+      () => db.getFirstAsync<{ id: string }>(sql, values),
+    );
 
     if (!createdRow)
       throw new CustomError(
@@ -34,7 +38,10 @@ export const productSqliteService = (db: SQLiteDatabase): ProductService => ({
     const helpers = updateHelper(tableName, { id }, product);
     if (!helpers) return;
 
-    const result = await db.runAsync(helpers.sql, helpers.values);
+    const result = await sqlErrorHandler(
+      "Hubo un error al intentar actualizar un producto",
+      () => db.runAsync(helpers.sql, helpers.values),
+    );
 
     if (result.changes === 0) {
       throw new CustomError(
@@ -44,9 +51,12 @@ export const productSqliteService = (db: SQLiteDatabase): ProductService => ({
     }
   },
   findById: async (id: string): Promise<Product> => {
-    const row = await db.getFirstAsync<Product>(
-      `SELECT * FROM ${tableName} WHERE id = ?`,
-      [id],
+    const row = await sqlErrorHandler(
+      "Hubo un error al intentar buscar un producto",
+      () =>
+        db.getFirstAsync<Product>(`SELECT * FROM ${tableName} WHERE id = ?`, [
+          id,
+        ]),
     );
     if (!row)
       throw new CustomError("Producto no encontrado", ErrorType.NOT_FOUND);
@@ -78,10 +88,16 @@ export const productSqliteService = (db: SQLiteDatabase): ProductService => ({
     sql += " " + paginationResult.paginationSql;
     values.push(...paginationResult.values);
 
-    return await db.getAllAsync<Product>(sql, values);
+    return await sqlErrorHandler(
+      "Hubo un error al intentar buscar productos",
+      () => db.getAllAsync<Product>(sql, values),
+    );
   },
   delete: async (id: string): Promise<void> => {
-    const result = await db.runAsync(`DELETE FROM products WHERE id = ?`, [id]);
+    const result = await sqlErrorHandler(
+      "Hubo un error al intentar eliminar un producto",
+      () => db.runAsync(`DELETE FROM products WHERE id = ?`, [id]),
+    );
     if (result.changes === 0)
       throw new CustomError(
         `No se encontró ningún producto con el ID: ${id}`,

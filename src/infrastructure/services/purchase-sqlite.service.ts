@@ -1,3 +1,4 @@
+import { sqlErrorHandler } from "@/lib/sql-error-handler";
 import { getEndDate, getStartDate } from "@/lib/utils/date-limits";
 import {
   insertHelper,
@@ -13,7 +14,7 @@ import {
 } from "@entities/purchase.entity";
 import { CustomError, ErrorType } from "@infrastructure/error/CustomError";
 import { PurchaseService } from "@interfaces/purchase-service.interface";
-import { SQLiteDatabase } from "expo-sqlite";
+import { SQLiteDatabase, SQLiteStatement } from "expo-sqlite";
 
 const purchaseTable = "purchases";
 const purchaseItemsTable = "purchase_items";
@@ -33,47 +34,56 @@ export const purchaseSqliteService = (db: SQLiteDatabase): PurchaseService => ({
     const { sql, values } = insertHelper(purchaseTable, newPurchase);
     let newPurchaseId;
 
-    await db.withTransactionAsync(async () => {
-      const result = await db.getFirstAsync<{ id: string }>(sql, values);
+    await sqlErrorHandler(
+      "Hubo un error al intentar crear una lista de compras",
+      async () => {
+        await db.withTransactionAsync(async () => {
+          const result = await db.getFirstAsync<{ id: string }>(sql, values);
 
-      if (!result) {
-        throw new CustomError(
-          "No se pudo crear el listado de compras",
-          ErrorType.INTERNAL_ERROR,
-        );
-      }
+          if (!result) {
+            throw new CustomError(
+              "No se pudo crear el listado de compras",
+              ErrorType.INTERNAL_ERROR,
+            );
+          }
 
-      newPurchaseId = result.id;
+          newPurchaseId = result.id;
 
-      const statement = await db.prepareAsync(
-        `INSERT INTO ${purchaseItemsTable} (
-          productId,
-          supermarketId,
-          purchaseId,
-          price,
-          quantity
-        ) VALUES ($productId, $supermarketId, $purchaseId, $price, $quantity)`,
-      );
+          let statement: SQLiteStatement | undefined;
 
-      try {
-        for (const item of purchase.items) {
-          await statement.executeAsync({
-            $productId: item.productId,
-            $supermarketId: item.supermarketId,
-            $purchaseId: newPurchaseId,
-            $price: item.price,
-            $quantity: item.quantity,
-          });
-        }
-      } catch (error) {
-        throw new CustomError(
-          "Hubo un problema al agregar los articulos de la compra",
-          ErrorType.INTERNAL_ERROR,
-        );
-      } finally {
-        await statement.finalizeAsync();
-      }
-    });
+          try {
+            statement = await db.prepareAsync(
+              `INSERT INTO ${purchaseItemsTable} (
+                productId,
+                supermarketId,
+                purchaseId,
+                price,
+                quantity
+              ) VALUES ($productId, $supermarketId, $purchaseId, $price, $quantity)`,
+            );
+
+            for (const item of purchase.items) {
+              await statement.executeAsync({
+                $productId: item.productId,
+                $supermarketId: item.supermarketId,
+                $purchaseId: newPurchaseId,
+                $price: item.price,
+                $quantity: item.quantity,
+              });
+            }
+          } catch (error) {
+            throw new CustomError(
+              "Hubo un problema al agregar los articulos de la compra",
+              ErrorType.INTERNAL_ERROR,
+            );
+          } finally {
+            if (statement) {
+              await statement.finalizeAsync();
+            }
+          }
+        });
+      },
+    );
 
     return {
       id: newPurchaseId!,
@@ -81,13 +91,16 @@ export const purchaseSqliteService = (db: SQLiteDatabase): PurchaseService => ({
     };
   },
   findById: async (id: string): Promise<PurchaseWithItems> => {
-    const rows = await db.getAllAsync<
-      PurchaseItem & {
-        date: number;
-        total: number;
-      }
-    >(
-      `SELECT 
+    const rows = await sqlErrorHandler(
+      "Hubo un error al intentar buscar una lista de compras",
+      () =>
+        db.getAllAsync<
+          PurchaseItem & {
+            date: number;
+            total: number;
+          }
+        >(
+          `SELECT 
         p.id AS purchaseId, 
         p.total, 
         p.date,
@@ -99,7 +112,8 @@ export const purchaseSqliteService = (db: SQLiteDatabase): PurchaseService => ({
         INNER JOIN ${purchaseItemsTable} pi ON p.id = pi.purchaseId
         WHERE p.id = ?
       `,
-      [id],
+          [id],
+        ),
     );
 
     if (rows.length === 0) {
@@ -136,15 +150,19 @@ export const purchaseSqliteService = (db: SQLiteDatabase): PurchaseService => ({
     const startDate = getStartDate(range.start);
     const endDate = getEndDate(range.end);
     try {
-      return await db.getAllAsync<Purchase>(
-        `SELECT 
+      return await sqlErrorHandler(
+        "Hubo un error al intentar buscar listas de compras",
+        () =>
+          db.getAllAsync<Purchase>(
+            `SELECT 
           id, 
           total, 
           date 
         FROM ${purchaseTable} 
         WHERE date BETWEEN ? AND ?
         ${orderSql} ${paginationSql}`,
-        [startDate, endDate, ...orderValues, ...paginationValues],
+            [startDate, endDate, ...orderValues, ...paginationValues],
+          ),
       );
     } catch (error) {
       throw new CustomError(
@@ -154,9 +172,9 @@ export const purchaseSqliteService = (db: SQLiteDatabase): PurchaseService => ({
     }
   },
   delete: async (id: string): Promise<void> => {
-    const result = await db.runAsync(
-      `DELETE FROM ${purchaseTable} WHERE id = ?`,
-      [id],
+    const result = await sqlErrorHandler(
+      "Hubo un error al intentar eliminar una lista de compras",
+      () => db.runAsync(`DELETE FROM ${purchaseTable} WHERE id = ?`, [id]),
     );
     if (result.changes === 0)
       throw new CustomError(

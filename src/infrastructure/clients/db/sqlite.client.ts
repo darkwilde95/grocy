@@ -6,12 +6,12 @@ import { paginationSchema } from "@schemas/common/pagination.dto";
 import * as SQLite from "expo-sqlite";
 import { z } from "zod";
 
-export const initializeDatabase = async (): Promise<SQLite.SQLiteDatabase> => {
+export const initializeDatabase = async () => {
   const db = await SQLite.openDatabaseAsync(DB_NAME);
 
-  await db.execAsync("PRAGMA foreign_keys = ON;");
-
   await db.withTransactionAsync(async () => {
+    await db.execAsync("PRAGMA foreign_keys = ON;");
+
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS categories (
         id TEXT PRIMARY KEY NOT NULL DEFAULT (lower(hex(randomblob(16)))),
@@ -70,21 +70,25 @@ export const initializeDatabase = async (): Promise<SQLite.SQLiteDatabase> => {
       );
     `);
   });
-
   console.log("Base de datos inicializada correctamente.");
-  return db;
 };
 
 export const insertHelper = (
   table: string,
   object: Record<string, SQLite.SQLiteBindValue>,
+  withId = true,
 ) => {
   const entries = Object.entries(object);
   const insertClause = entries.map((entry) => entry[0]).join(", ");
   const values = entries.map((entry) => entry[1]);
 
   return {
-    sql: `INSERT INTO ${table} (${insertClause}) VALUES (${values.map(() => "?").join(", ")}) RETURNING id`,
+    sql: `
+      INSERT INTO 
+        ${table} (${insertClause}) 
+        VALUES (${values.map(() => "?").join(", ")}) 
+        ${withId ? "RETURNING id" : ""}
+    `,
     values,
   };
 };

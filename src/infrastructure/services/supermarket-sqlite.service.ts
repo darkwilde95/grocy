@@ -1,3 +1,4 @@
+import { sqlErrorHandler } from "@/lib/sql-error-handler";
 import {
   insertHelper,
   paginationHelper,
@@ -20,7 +21,10 @@ export const supermarketSqlService = (
 ): SupermarketService => ({
   create: async (supermarket: CreateSupermarketDto): Promise<Supermarket> => {
     const { sql, values } = insertHelper(tableName, supermarket);
-    const createdRow = await db.getFirstAsync<{ id: string }>(sql, values);
+    const createdRow = await sqlErrorHandler(
+      "Hubo un error al intentar crear un supermercado",
+      () => db.getFirstAsync<{ id: string }>(sql, values),
+    );
 
     if (!createdRow)
       throw new CustomError(
@@ -41,7 +45,10 @@ export const supermarketSqlService = (
 
     if (!helpers) return;
 
-    const result = await db.runAsync(helpers.sql, helpers.values);
+    const result = await sqlErrorHandler(
+      "Hubo un error al intentar actualizar un supermercado",
+      () => db.runAsync(helpers.sql, helpers.values),
+    );
 
     if (result.changes === 0) {
       throw new CustomError(
@@ -51,9 +58,13 @@ export const supermarketSqlService = (
     }
   },
   findById: async (id: string): Promise<Supermarket> => {
-    const row = await db.getFirstAsync<Supermarket>(
-      `SELECT * FROM ${tableName} WHERE id = ?`,
-      [id],
+    const row = await sqlErrorHandler(
+      "Hubo un error al intentar buscar un supermercado",
+      () =>
+        db.getFirstAsync<Supermarket>(
+          `SELECT * FROM ${tableName} WHERE id = ?`,
+          [id],
+        ),
     );
     if (!row)
       throw new CustomError("Supermercado no encontrado", ErrorType.NOT_FOUND);
@@ -75,12 +86,16 @@ export const supermarketSqlService = (
     sql += " " + paginationResult.paginationSql;
     values.push(...paginationResult.values);
 
-    return await db.getAllAsync<Supermarket>(sql, values);
+    return await sqlErrorHandler(
+      "Hubo un error al intentar buscar supermercados",
+      () => db.getAllAsync<Supermarket>(sql, values),
+    );
   },
   delete: async (id: string): Promise<void> => {
-    const result = await db.runAsync(`DELETE FROM ${tableName} WHERE id = ?`, [
-      id,
-    ]);
+    const result = await sqlErrorHandler(
+      "Hubo un error al intentar eliminar un supermercado",
+      () => db.runAsync(`DELETE FROM ${tableName} WHERE id = ?`, [id]),
+    );
     if (result.changes === 0)
       throw new CustomError(
         `No se encontró ningún supermercado con el ID: ${id}`,
